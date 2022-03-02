@@ -48,7 +48,6 @@
 
 export default {
   name: 'ToolBar',
-  emits: ['update:toolCode'],
   props: {
     pen: {
       type: String,
@@ -66,10 +65,7 @@ export default {
       type: String,
       default: "Increase Text Size"
     },
-    toolCode: {
-      type: Number,
-      default: "toolCode"
-    }
+    toolCode: Number,
   },
   data() {
     return {
@@ -80,7 +76,6 @@ export default {
         done: false
       },
       showToolbar: false,
-      toolCode: 0,
       pos1 : 0, 
       pos2 : 0, 
       pos3 : 0, 
@@ -89,24 +84,26 @@ export default {
   },
   methods: {
     toggleState(state) {
-      let toolCode = 0;
+      let toolCode
       
       if (state === "pen") {
         this.accessibilityStates.erase = false;
         this.accessibilityStates.text = false;
         this.accessibilityStates[state] = !this.accessibilityStates[state];
-        toolCode = 0;
-        this.$emit('update:toolCode', toolCode)
-        console.log(toolCode)
+        this.toolCode = 0;
+        toolCode = this.toolCode
+        console.log('toolCode PEN : ' + toolCode)
+        console.log(this.toolCode)
       // this.applyState(state)
       }
       else if (state === "erase") {
         this.accessibilityStates.pen = false;
         this.accessibilityStates.text = false;
         this.accessibilityStates[state] = !this.accessibilityStates[state];
-        toolCode = 1;
-        this.$emit('update:toolCode', toolCode)
-        console.log(toolCode)
+        this.toolCode = 1;
+        toolCode = this.toolCode
+        console.log('toolCode ERASE : ' + toolCode)
+        console.log('AVEC LE THIS : ' + this.toolCode)
       // this.applyState(state)
       }
       else if (state === "text") {

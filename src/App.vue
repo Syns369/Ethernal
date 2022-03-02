@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <PixelGrid :currentColor="colors"/>
-    <ToolBar />
+    <PixelGrid :currentColor="colors" v-model="toolCode"/>
+    <ToolBar v-model="toolCode"/>
     <Twitter v-model="colors" /> 
     <ToolBar2/>
   </div>
@@ -13,6 +13,7 @@ import ToolBar from "./components/ToolBar.vue";
 import { Twitter } from "vue-color";
 import ToolBar2 from "./components/ToolBar2.vue"
 
+var toolCode
 var colors = {
   hex: '#194d33',
   hex8: '#194D33A8',
@@ -33,6 +34,7 @@ export default {
   data() {
     return {
       colors,
+      toolCode
     };
   },
 };
