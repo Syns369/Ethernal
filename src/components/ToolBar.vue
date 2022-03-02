@@ -1,5 +1,6 @@
 <template>
-    <div id="moveBar" class="fab">
+  <div draggable="true" id="moveBar">
+    <div class="fab">
     <span class="fab-action-button" @click="showToolbar = !showToolbar">
       <i class="material-icons fab-action-button-icon">
         create
@@ -38,12 +39,16 @@
       </div>
     </transition>
   </div>
+
+  
+  </div>
 </template>
 
 <script>
 
 export default {
   name: 'ToolBar',
+  emits: ['update:toolCode'],
   props: {
     pen: {
       type: String,
@@ -63,7 +68,7 @@ export default {
     },
     toolCode: {
       type: Number,
-      default: "ToolCode"
+      default: "toolCode"
     }
   },
   data() {
@@ -84,80 +89,81 @@ export default {
   },
   methods: {
     toggleState(state) {
+      let toolCode = 0;
       
       if (state === "pen") {
-        console.log("c le stylo");
         this.accessibilityStates.erase = false;
         this.accessibilityStates.text = false;
         this.accessibilityStates[state] = !this.accessibilityStates[state];
-      this.applyState(state)
+        toolCode = 0;
+        this.$emit('update:toolCode', toolCode)
+        console.log(toolCode)
+      // this.applyState(state)
       }
       else if (state === "erase") {
         this.accessibilityStates.pen = false;
         this.accessibilityStates.text = false;
         this.accessibilityStates[state] = !this.accessibilityStates[state];
-      this.applyState(state)
+        toolCode = 1;
+        this.$emit('update:toolCode', toolCode)
+        console.log(toolCode)
+      // this.applyState(state)
       }
       else if (state === "text") {
         this.accessibilityStates.pen = false;
         this.accessibilityStates.erase = false;
         this.accessibilityStates[state] = !this.accessibilityStates[state];
-      this.applyState(state)
+      // this.applyState(state)
       }
-      
-      
+      },
 
-
-
+    // applyState(state) {
       
-      
-    },
-    applyState(state) {
-      if (state === "pen") {
-        toolCode = 0
-      } else if (state === "erase") {
-        toolCode = 1
-      } else if (state === "text") {
-        toolCode = 2
-      }},
+    //   if (state === "pen") {
+    //     toolCode = 0;
+    //     console.log('toulucoudu : ' + toolCode)
+    //   } else if (state === "erase") {
+    //     toolCode = 1
+    //   } else if (state === "text") {
+    //     toolCode = 2
+    //   }
+    //   },
       
 
+  //   dragElement(moveBar) {
+  // if (document.getElementById("moveBar")) {
+  //   moveBar.onmousedown = dragMouseDown;
+  // }},
 
+  // dragMouseDown(e) {
+  //   e = e || window.event;
+  //   e.preventDefault();
+  //   // get the mouse cursor position at startup:
+  //   pos3 = e.clientX;
+  //   pos4 = e.clientY;
+  //   document.onmouseup = closeDragElement;
+  //   // call a function whenever the cursor moves:
+  //   document.onmousemove = elementDrag;
+  // },
 
-    dragElement(moveBar) {
-  if (document.getElementById("moveBar")) {
-    moveBar.onmousedown = dragMouseDown;
-  }},
+  // elementDrag(e) {
+  //   e = e || window.event;
+  //   e.preventDefault();
+  //   // calculate the new cursor position:
+  //   pos1 = pos3 - e.clientX;
+  //   pos2 = pos4 - e.clientY;
+  //   pos3 = e.clientX;
+  //   pos4 = e.clientY;
+  //   // set the element's new position:
+  //   moveBar.style.top = (moveBar.offsetTop - pos2) + "px";
+  //   moveBar.style.left = (moveBar.offsetLeft - pos1) + "px";
+  // },
 
-  dragMouseDown(e) {
-    e = e || window.event;
-    e.preventDefault();
-    // get the mouse cursor position at startup:
-    pos3 = e.clientX;
-    pos4 = e.clientY;
-    document.onmouseup = closeDragElement;
-    // call a function whenever the cursor moves:
-    document.onmousemove = elementDrag;
-  },
-
-  elementDrag(e) {
-    e = e || window.event;
-    e.preventDefault();
-    // calculate the new cursor position:
-    pos1 = pos3 - e.clientX;
-    pos2 = pos4 - e.clientY;
-    pos3 = e.clientX;
-    pos4 = e.clientY;
-    // set the element's new position:
-    moveBar.style.top = (moveBar.offsetTop - pos2) + "px";
-    moveBar.style.left = (moveBar.offsetLeft - pos1) + "px";
-  },
-
-  closeDragElement() {
-    // stop moving when mouse button is released:
-    document.onmouseup = null;
-    document.onmousemove = null;
-  }
+  // closeDragElement() {
+  //   // stop moving when mouse button is released:
+  //   document.onmouseup = null;
+  //   document.onmousemove = null;
+  // }
 
 },
   computed: {
@@ -185,6 +191,8 @@ export default {
 </script>
 
 <style scoped>
+
+
   ul {
     margin: 0;
     padding: 0;
