@@ -1,12 +1,25 @@
 <template>
+<div>
 <div class="all">
 <span class="material-icons item">
 shopping_cart
 </span>
 <span class="material-icons item">
 live_help
-</span>
+</span></div>
+<div class=popup>
+<input type="checkbox" id="toggle">
+<label class="labelOpen material-icons" for="toggle">live_help</label>
 
+<dialog >
+  <p>
+    
+  Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa nihil dolore similique quis qui ad blanditiis ex eum! Enim maiores ipsam fugiat officiis earum distinctio natus reprehenderit aliquam est iusto!
+  </p>
+    
+  
+  <label for="toggle">close overlay</label>
+</dialog></div>
 </div>
 </template>
 
@@ -71,5 +84,47 @@ export default {
     bottom: 4vh;;
     right: 3vw;
     z-index: 3000;
+}
+
+
+.popup{
+  z-index: 2999;
+  font-family: monospace;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top:0;
+  right:0;
+  
+}
+#toggle{
+  visibility: hidden;
+  opacity: 0;
+  position: relative;
+  z-index: -1;
+}
+
+#toggle:checked ~ dialog {
+  display: block;
+}
+
+label{
+  background: skyblue;
+  color: white;
+  padding: .5em 1em;
+  border-radius: 4px;
+}
+@keyframes appear {
+  0%{
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+
+dialog{
+  animation: appear 350ms ease-in 1;
+  max-width: 500px;
 }
 </style>

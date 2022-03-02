@@ -3,15 +3,20 @@
 </template>
 
 <script>
+import ToolBar from './ToolBar.vue'
 export default {
   name: "PixelGrid",
   props: {
     currentColor: Object,
+    toolCode: Number,
   },
-  components: {},
+  components: {
+    ToolBar,
+  },
   data() {
     return {
       grid_data: [],
+      toolCode
     };
   },
   methods: {
@@ -34,6 +39,8 @@ export default {
 
     var rows = 90;
     var columns = 60;
+
+    var toolCode = 1;
 
     var data = []; // array du dessous (noise)
     var persistentData = this.load(); // array du dessus
@@ -127,7 +134,7 @@ export default {
       }
     }
 
-    var toolCode = 0                      //PEN = 0, GOMME = 1, TEXT = 2                                  <<<<<<<<<<||||||||||||||||||||||||||||||||||||||||||||||||
+    // var toolCode = 0                      //PEN = 0, GOMME = 1, TEXT = 2                                  <<<<<<<<<<||||||||||||||||||||||||||||||||||||||||||||||||
     function currentTool(color) {
       switch (toolCode) {
         case 0:
