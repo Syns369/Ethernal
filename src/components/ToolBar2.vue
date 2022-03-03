@@ -15,6 +15,9 @@ shopping_cart
 <label class="material-icons item" for="toggle">live_help</label>
 
 <dialog >
+<header>
+  FAQ
+</header>
   <p>
     
   Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa nihil dolore similique quis qui ad blanditiis ex eum! Enim maiores ipsam fugiat officiis earum distinctio natus reprehenderit aliquam est iusto!
@@ -130,11 +133,21 @@ export default {
 }
 
 dialog{
+  color: white;
+  background-color: black;
   position: fixed;
   top: 5%;
   animation: appear 350ms ease-in 1;
   max-width: 90%;
   overflow: auto;
   max-height: 90%;
+}
+
+p {
+  padding: 2%;
+}
+header {
+  font-size: 50px;
+  font-style: bold;
 }
 </style>
