@@ -1,25 +1,32 @@
 <template>
 <div>
-<div class="all">
+<!-- <div class="all">
 <span class="material-icons item">
 shopping_cart
 </span>
 <span class="material-icons item">
 live_help
-</span></div>
-<div class=popup>
+</span></div> -->
+<div class="popup all">
+  <span class="material-icons item">
+shopping_cart
+</span>
 <input type="checkbox" id="toggle">
-<label class="labelOpen material-icons" for="toggle">live_help</label>
+<label class="material-icons item" for="toggle">live_help</label>
 
 <dialog >
   <p>
     
   Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa nihil dolore similique quis qui ad blanditiis ex eum! Enim maiores ipsam fugiat officiis earum distinctio natus reprehenderit aliquam est iusto!
+  Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa nihil dolore similique quis qui ad blanditiis ex eum! Enim maiores ipsam fugiat officiis earum distinctio natus reprehenderit aliquam est iusto!
+  Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa nihil dolore similique quis qui ad blanditiis ex eum! Enim maiores ipsam fugiat officiis earum distinctio natus reprehenderit aliquam est iusto!
+  Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa nihil dolore similique quis qui ad blanditiis ex eum! Enim maiores ipsam fugiat officiis earum distinctio natus reprehenderit aliquam est iusto!
   </p>
     
   
-  <label for="toggle">close overlay</label>
-</dialog></div>
+  <label class="label2" for="toggle">close overlay</label>
+</dialog>
+</div>
 </div>
 </template>
 
@@ -95,14 +102,10 @@ export default {
   align-items: center;
   justify-content: center;
   position: fixed;
-  top:0;
-  right:0;
-  
 }
 #toggle{
   visibility: hidden;
   opacity: 0;
-  position: relative;
   z-index: -1;
 }
 
@@ -110,12 +113,15 @@ export default {
   display: block;
 }
 
-label{
-  background: skyblue;
+.label2{
+  background: #2196F3;
   color: white;
   padding: .5em 1em;
-  border-radius: 4px;
+  border-radius: 6px;
 }
+
+
+
 @keyframes appear {
   0%{
     opacity: 0;
@@ -124,7 +130,11 @@ label{
 }
 
 dialog{
+  position: fixed;
+  top: 5%;
   animation: appear 350ms ease-in 1;
-  max-width: 500px;
+  max-width: 90%;
+  overflow: auto;
+  max-height: 90%;
 }
 </style>
