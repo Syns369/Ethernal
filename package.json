@@ -16,11 +16,12 @@
     "upng": "^1.0.1",
     "upng-js": "^2.1.0",
     "vue": "^2.6.11",
-    "vue-color": "^2.8.1"
+    "vue-color": "^2.8.1",
+    "vuex": "^4.0.2"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "~4.5.10",
-    "@vue/cli-service": "~4.5.10",
+    "@vue/cli-plugin-babel": "^5.0.1",
+    "@vue/cli-service": "^5.0.1",
     "vue-template-compiler": "^2.6.11"
   },
   "eslintConfig": {

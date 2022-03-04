@@ -1,46 +1,63 @@
 <template>
-  <div draggable="true" id="moveBar">
+  <div>
+    <div id="mydiv">
+      C'est le test s'il te plait fais moi bouger ce truc
+    </div>
     <div class="fab">
-    <span class="fab-action-button" @click="showToolbar = !showToolbar">
-      <i class="material-icons fab-action-button-icon">
-        create
-      </i>
-    </span>
-    <transition name="fade">
-      <div class='toolbar' v-if="showToolbar">
-        <ul class="items">
-          <li class="item">
-            <a class="menu-item" data-tooltip="Draw" v-bind:class="{ active: accessibilityStates.pen }" @click="toggleState('pen')" :aria-label="pen">
-              <span class="material-icons menu-item-icon">
-                brush
-              </span>
-            </a>
-          </li>
-          <li>
-            <a class="menu-item" data-tooltip="Erase" v-bind:class="{ active: accessibilityStates.erase }" @click="toggleState('erase')" :aria-label="Eraser">
-              <i class="material-icons menu-item-icon">
-                backspace
-              </i>
-            </a>
-          </li>
-          <li>
-            <a class="menu-item" data-tooltip="Text" v-bind:class="{ active: accessibilityStates.text }" @click="toggleState('text')" :aria-label="Text">
-              <i class="material-icons menu-item-icon">
-                font_download
-              </i>
-            </a>
-          </li>
-           <li>
-            <a class="menu-item" data-tooltip="Delete" v-bind:class="{ active: accessibilityStates.deleteTool}" @click="toggleState('deleteTool')" :aria-label="Delete">
-              <i class="material-icons menu-item-icon">delete</i>
-            </a>
-          </li>
-        </ul>
-      </div>
-    </transition>
-  </div>
-
-  
+      <span class="fab-action-button" @click="showToolbar = !showToolbar">
+        <i class="material-icons fab-action-button-icon"> create </i>
+      </span>
+      <transition name="fade">
+        <div class="toolbar" v-if="showToolbar">
+          <ul class="items">
+            <li class="item">
+              <a
+                class="menu-item"
+                data-tooltip="Draw"
+                v-bind:class="{ active: accessibilityStates.pen }"
+                @click="toggleState('pen')"
+                aria-label="Pen"
+              >
+                <span class="material-icons menu-item-icon"> brush </span>
+              </a>
+            </li>
+            <li>
+              <a
+                class="menu-item"
+                data-tooltip="Erase"
+                v-bind:class="{ active: accessibilityStates.erase }"
+                @click="toggleState('erase')"
+                aria-label="Eraser"
+              >
+                <i class="material-icons menu-item-icon"> backspace </i>
+              </a>
+            </li>
+            <li>
+              <a
+                class="menu-item"
+                data-tooltip="Text"
+                v-bind:class="{ active: accessibilityStates.text }"
+                @click="toggleState('text')"
+                aria-label="Text"
+              >
+                <i class="material-icons menu-item-icon"> font_download </i>
+              </a>
+            </li>
+            <li>
+              <a
+                class="menu-item"
+                data-tooltip="Delete"
+                v-bind:class="{ active: accessibilityStates.deleteTool }"
+                @click="toggleState('deleteTool')"
+                aria-label="Delete"
+              >
+                <i class="material-icons menu-item-icon">delete</i>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </transition>
+    </div>
   </div>
 </template>
 
@@ -51,21 +68,21 @@ export default {
   props: {
     pen: {
       type: String,
-      default: "Invert Colors"
+      default: "penTool"
     },
     erase: {
       type: String,
-      default: "Highlight Links"
+      default: "eraseTool"
     },
     done: {
       type: String,
-      default: "Done"
+      default: "doneTool"
     },
-    textText: {
+    text: {
       type: String,
-      default: "Increase Text Size"
+      default: "textTool"
     },
-    toolCode: Number,
+
   },
   data() {
     return {
@@ -75,6 +92,7 @@ export default {
         text: false,
         done: false
       },
+      toolCode: null,
       showToolbar: false,
       pos1 : 0, 
       pos2 : 0, 
@@ -84,16 +102,14 @@ export default {
   },
   methods: {
     toggleState(state) {
-      let toolCode
       
       if (state === "pen") {
         this.accessibilityStates.erase = false;
         this.accessibilityStates.text = false;
         this.accessibilityStates[state] = !this.accessibilityStates[state];
         this.toolCode = 0;
-        toolCode = this.toolCode
         console.log('toolCode PEN : ' + toolCode)
-        console.log(this.toolCode)
+        console.log('AVEC LE THIS : ' + this.toolCode)
       // this.applyState(state)
       }
       else if (state === "erase") {
@@ -101,7 +117,6 @@ export default {
         this.accessibilityStates.text = false;
         this.accessibilityStates[state] = !this.accessibilityStates[state];
         this.toolCode = 1;
-        toolCode = this.toolCode
         console.log('toolCode ERASE : ' + toolCode)
         console.log('AVEC LE THIS : ' + this.toolCode)
       // this.applyState(state)
@@ -112,7 +127,8 @@ export default {
         this.accessibilityStates[state] = !this.accessibilityStates[state];
       // this.applyState(state)
       }
-      },
+      this.$emit("input", this.toolCode)
+    },
 
     // applyState(state) {
       
@@ -127,40 +143,7 @@ export default {
     //   },
       
 
-  //   dragElement(moveBar) {
-  // if (document.getElementById("moveBar")) {
-  //   moveBar.onmousedown = dragMouseDown;
-  // }},
-
-  // dragMouseDown(e) {
-  //   e = e || window.event;
-  //   e.preventDefault();
-  //   // get the mouse cursor position at startup:
-  //   pos3 = e.clientX;
-  //   pos4 = e.clientY;
-  //   document.onmouseup = closeDragElement;
-  //   // call a function whenever the cursor moves:
-  //   document.onmousemove = elementDrag;
-  // },
-
-  // elementDrag(e) {
-  //   e = e || window.event;
-  //   e.preventDefault();
-  //   // calculate the new cursor position:
-  //   pos1 = pos3 - e.clientX;
-  //   pos2 = pos4 - e.clientY;
-  //   pos3 = e.clientX;
-  //   pos4 = e.clientY;
-  //   // set the element's new position:
-  //   moveBar.style.top = (moveBar.offsetTop - pos2) + "px";
-  //   moveBar.style.left = (moveBar.offsetLeft - pos1) + "px";
-  // },
-
-  // closeDragElement() {
-  //   // stop moving when mouse button is released:
-  //   document.onmouseup = null;
-  //   document.onmousemove = null;
-  // }
+    
 
 },
   computed: {
@@ -169,12 +152,55 @@ export default {
     }
   },
   mounted() {
-    if (localStorage.getItem('settings')) {
-      this.accessibilityStates = JSON.parse(localStorage.getItem('settings'))
-      for (var state in this.accessibilityStates) {
-        if (this.accessibilityStates[state]) this.applyState(state)
-      }
-    }
+    // if (localStorage.getItem('settings')) {
+    //   this.accessibilityStates = JSON.parse(localStorage.getItem('settings'))
+    //   }
+    // },
+    // Make the DIV element draggable:
+dragElement(document.getElementById("mydiv"));
+
+function dragElement(elmnt) {
+  var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+  if (document.getElementById(elmnt.id + "header")) {
+    // if present, the header is where you move the DIV from:
+    document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
+  } else {
+    // otherwise, move the DIV from anywhere inside the DIV:
+    elmnt.onmousedown = dragMouseDown;
+  }
+
+  function dragMouseDown(e) {
+    e = e || window.event;
+    e.preventDefault();
+    // get the mouse cursor position at startup:
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    document.onmouseup = closeDragElement;
+    // call a function whenever the cursor moves:
+    document.onmousemove = elementDrag;
+  }
+
+  function elementDrag(e) {
+    e = e || window.event;
+    e.preventDefault();
+    // calculate the new cursor position:
+    pos1 = pos3 - e.clientX;
+    pos2 = pos4 - e.clientY;
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    // set the element's new position:
+    elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+    elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+  }
+
+  function closeDragElement() {
+    // stop moving when mouse button is released:
+    document.onmouseup = null;
+    document.onmousemove = null;
+  }
+}
+
+
   },
   watch: {
     accessibilityStates: {
@@ -188,185 +214,195 @@ export default {
 </script>
 
 <style scoped>
+#mydiv {
+  position: fixed;
+  z-index: 9;
+  background-color: #f1f1f1;
+  text-align: center;
+  cursor: pointer;
+}
 
+ul {
+  margin: 0;
+  padding: 0;
+  font-weight: normal;
+}
+[data-tooltip] {
+  position: relative;
+  z-index: 2;
+  cursor: pointer;
+}
 
-  ul {
-    margin: 0;
-    padding: 0;
-    font-weight: normal;
-  }
-  [data-tooltip] {
-    position: relative;
-    z-index: 2;
-    cursor: pointer;
-  }
+/* Hide the tooltip content by default */
+[data-tooltip]:before,
+[data-tooltip]:after {
+  visibility: hidden;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  filter: progid: DXImageTransform.Microsoft.Alpha(Opacity=0);
+  opacity: 0;
+  pointer-events: none;
+}
 
-  /* Hide the tooltip content by default */
-  [data-tooltip]:before,
-  [data-tooltip]:after {
-    visibility: hidden;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
-    filter: progid: DXImageTransform.Microsoft.Alpha(Opacity=0);
-    opacity: 0;
-    pointer-events: none;
-  }
+/* Position tooltip above the element */
+[data-tooltip]:before {
+  position: absolute;
+  bottom: 105%;
+  left: 50%;
+  margin-bottom: 5px;
+  margin-left: -80px;
+  padding: 7px;
+  width: 160px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  background-color: #000;
+  background-color: hsla(0, 0%, 20%, 0.9);
+  color: #fff;
+  content: attr(data-tooltip);
+  text-align: center;
+  font-size: 14px;
+  line-height: 1.2;
+}
 
-  /* Position tooltip above the element */
-  [data-tooltip]:before {
-    position: absolute;
-    bottom: 105%;
-    left: 50%;
-    margin-bottom: 5px;
-    margin-left: -80px;
-    padding: 7px;
-    width: 160px;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    border-radius: 3px;
-    background-color: #000;
-    background-color: hsla(0, 0%, 20%, 0.9);
-    color: #fff;
-    content: attr(data-tooltip);
-    text-align: center;
-    font-size: 14px;
-    line-height: 1.2;
-  }
+/* Triangle hack to make tooltip look like a speech bubble */
+[data-tooltip]:after {
+  position: absolute;
+  bottom: 105%;
+  left: 50%;
+  margin-left: -5px;
+  width: 0;
+  border-top: 5px solid #000;
+  border-top: 5px solid hsla(0, 0%, 20%, 0.9);
+  border-right: 5px solid transparent;
+  border-left: 5px solid transparent;
+  content: " ";
+  font-size: 0;
+  line-height: 0;
+}
 
-  /* Triangle hack to make tooltip look like a speech bubble */
-  [data-tooltip]:after {
-    position: absolute;
-    bottom: 105%;
-    left: 50%;
-    margin-left: -5px;
-    width: 0;
-    border-top: 5px solid #000;
-    border-top: 5px solid hsla(0, 0%, 20%, 0.9);
-    border-right: 5px solid transparent;
-    border-left: 5px solid transparent;
-    content: " ";
-    font-size: 0;
-    line-height: 0;
-  } 
- 
+/* Show tooltip content on hover */
+[data-tooltip]:hover:before,
+[data-tooltip]:hover:after {
+  visibility: visible;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+  filter: progid: DXImageTransform.Microsoft.Alpha(Opacity=100);
+  opacity: 1;
+}
 
-  /* Show tooltip content on hover */
-  [data-tooltip]:hover:before,
-  [data-tooltip]:hover:after {
-    visibility: visible;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
-    filter: progid: DXImageTransform.Microsoft.Alpha(Opacity=100);
-    opacity: 1;
-  }
+.items {
+  list-style-type: none;
+}
 
-  .items {
-    list-style-type: none;
-  }
-  .toolbar {
-    width: 300px;
-    position: absolute;
-    left: 65px;
-    bottom: 50%;
-    margin-bottom: 2px;
-  } 
+/* Barre d'outils sans le fab button */
+.toolbar {
+  width: 300px;
+  position: absolute;
+  left: 65px;
+  bottom: 50%;
+  margin-bottom: 2px;
+}
 
-  .menu-item-icon {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-  .menu-item {
-    border-radius: 100px;
-    border: 2px solid #2196F3;
-    text-align: center;
-    float: left;
-    width: 50px;
-    height: 50px;
-    transition: all 0.3s ease;
-    background: white;
-    color: black;
-    font-size: 30px;
-    cursor: pointer;
-    margin-right: 10px;
-  }
+/* Position de l'icone dans le cercle */
+.menu-item-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.menu-item {
+  border-radius: 100px;
+  border: 2px solid #2196f3;
+  text-align: center;
+  float: left;
+  width: 50px;
+  height: 50px;
+  transition: all 0.3s ease;
+  background: white;
+  color: black;
+  font-size: 30px;
+  cursor: pointer;
+  margin-right: 10px;
+}
 
-  .menu-item:hover {
-    background: #2196F3;
-  }
+.menu-item:hover {
+  background: #2196f3;
+}
 
-  .active {
-    background-color: #2196F3;
-  }
+.active {
+  background-color: #2196f3;
+}
 </style>
 
 <style>
-  .font {
-    font-size: 1.25em;
-    font-size: 1.25rem;
-  }
-
+.font {
+  font-size: 1.25em;
+  font-size: 1.25rem;
+}
 </style>
 
 
 <style scoped>
-
-  .fab {
-    position: fixed;
-    width: 56px;
-    left: 3vw;
-    bottom: 4vh;
-    z-index: 999;
-  }
-  .fab-action-button {
-    cursor: pointer;
-    position: absolute;
-    bottom: 0;
-    display: block;
-    width: 56px;
-    height: 56px;
-    background-color: #2196F3;
-    border-radius: 50%;
-    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
-  }
-  .fab-action-button-icon {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 37px !important;
-    color: white;
-  }
-  .fade-enter-active, .fade-leave-active {
-    transition: opacity .5s;
-  }
-  .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
-    opacity: 0;
-  }
+.fab {
+  z-index: 3000;
+  position: absolute;
+  width: 56px;
+  left: 3vw;
+  bottom: 4vh;
+  z-index: 999;
+}
+.fab-action-button {
+  cursor: pointer;
+  position: fixed;
+  bottom: 4vh;;
+  left: 3vw;
+  display: block;
+  width: 56px;
+  height: 56px;
+  background-color: #2196f3;
+  border-radius: 50%;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12),
+    0 3px 1px -2px rgba(0, 0, 0, 0.2);
+}
+.fab-action-button-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 37px !important;
+  color: white;
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
 </style>
 
 <style scoped>
-  /* fallback */
-  @font-face {
-    font-family: "Material Icons";
-    font-style: normal;
-    font-weight: 400;
-    src: local("Material Icons"), local("MaterialIcons-Regular"),
-      url(https://fonts.gstatic.com/s/materialicons/v17/2fcrYFNaTjcS6g4U3t-Y5ZjZjT5FdEJ140U2DJYC3mY.woff2)
-        format("woff2");
-  }
-  .material-icons {
-    font-family: "Material Icons";
-    font-weight: normal;
-    font-style: normal;
-    font-size: 24px;
-    line-height: 1;
-    letter-spacing: normal;
-    text-transform: none;
-    display: inline-block;
-    white-space: nowrap;
-    word-wrap: normal;
-    direction: ltr;
-    -webkit-font-feature-settings: "liga";
-    -webkit-font-smoothing: antialiased;
-  }
+/* fallback */
+@font-face {
+  font-family: "Material Icons";
+  font-style: normal;
+  font-weight: 400;
+  src: local("Material Icons"), local("MaterialIcons-Regular"),
+    url(https://fonts.gstatic.com/s/materialicons/v17/2fcrYFNaTjcS6g4U3t-Y5ZjZjT5FdEJ140U2DJYC3mY.woff2)
+      format("woff2");
+}
+.material-icons {
+  font-family: "Material Icons";
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: "liga";
+  -webkit-font-smoothing: antialiased;
+}
 </style>
